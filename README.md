@@ -20,3 +20,8 @@ gather_results.py [results directory] [output CSV file]
 
 ## Analysis Scripts
 
+* `get_natgen_genes.py` - extract genes from ecDNA amplicons described in Kim 2020 Nature Genetics paper
+* `natgen_lookup.R` - analyze frequency of our ecDNA amplicon genes in Kim 2020 data. Make figures 1a and 1b
+* `expression_analysis.R` - compare expression of ecDNA amplicon genes in ecDNA- vs ecDNA+ samples. Make figure 1c
+* `create_deseq_data.R` - create DESeq object for `expression_analysis.R`
+* `clinical_associations.R` - test clinical features associated with ecDNA status. Make figures 1d-f (Figure 2 in preprint) and code for Table 1 p-values
