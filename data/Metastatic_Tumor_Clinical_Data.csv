@@ -1,0 +1,26 @@
+Patient,Age_Years,Sex,Primary_Location,Metastasis_Location,Nodal_Stage,Lymph_Node_Ratio,Extracapsular_Spread,Grade,Immunosuppression
+CSCC_0001 ,30,male ,left lip ,left neck ,N3b ,3/27,yes ,1,no 
+CSCC_0002 ,78,male ,right ear ,right parotid ,N3b ,2/52,yes ,3,no 
+CSCC_0003 ,74,male ,unknown ,right parotid ,N3b ,2/42,yes ,3,no 
+CSCC_0004 ,64,male ,bilateral lip ,bilateral neck ,N2c ,3/55,no ,2,no 
+CSCC_0005 ,78,male ,left forehead ,left parotid ,N2a ,4/4,Not stated ,3,no 
+CSCC_0006 ,69,male ,left cheek ,left neck ,N3b ,2/42,yes ,3,Azathioprine
+CSCC_0007 ,87,male ,unknown ,left neck ,N2b ,1/16,no ,3,no 
+CSCC_0009 ,66,male ,bilateral forehead,right neck ,N3b ,3/109,yes ,2,"cyclosporine A ,tacrolimus "
+CSCC_0010 ,64,male ,left scalp ,left neck ,N3b ,2/11,yes ,3,no 
+CSCC_0011 ,69,male ,unknown ,right parotid ,N3b ,3/108,yes ,3,no 
+CSCC_0012 ,77,male ,right nose ,right neck ,N3b ,4/64,yes ,2,no 
+CSCC_0013 ,77,male ,right pinna ,right parotid ,N3b ,1/1,yes ,2,no 
+CSCC_0014 ,79,female ,left cheek ,left perifacial ,N3b ,1/1,yes ,3,no 
+CSCC_0022 ,66,male ,scalp ,left neck ,N3b ,3/24,yes ,3,no 
+CSCC_0024 ,54,male ,lip ,right neck ,N3b ,3/32,yes ,2,no 
+CSCC_0025 ,82,male ,parotid ,Parotid ,N1 ,1/15,no ,3,no 
+CSCC_0066 ,56,male ,Unknown ,Parotid ,N1 ,1/1,no ,3,no 
+CSCC_0124 ,80,male ,Parotid ,Parotid ,N3b ,1/6,yes ,Not stated,no 
+CSCC_0125 ,43,male ,parotid ,parotid ,N3b ,1/20,Not stated ,Not stated ,no 
+CSCC_0126 ,66,male ,left temple ,left neck ,N3b ,3/8,yes ,3,no 
+CSCC_0130 ,70,male ,unknown ,left parotid ,N3b ,1/6,yes ,3,no 
+CSCC_0132 ,76,male ,right ear ,parotid /neck ,N2b ,23/43,no ,3,no 
+CSCC_0133 ,75,male ,unknown ,parotid ,N3b ,1/4,yes ,Not stated,no 
+CSCC_0134 ,71,male ,unknown ,right neck ,N3b ,9/17,yes ,Not stated,no 
+CSCC_0135 ,82,male ,unknown ,right neck ,3b,1/48,yes ,3,no 
