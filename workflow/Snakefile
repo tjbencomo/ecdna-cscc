@@ -1,0 +1,111 @@
+"""
+Workflow to run AmpliconSuite-pipeline on WGS samples
+Pipeline task summary:
+1. Convert BAM files to FASTQ
+2. Process (alignment workflow) using AmpliconArchitect
+3. Call amplicons with AmpliconArchitect + classify
+
+Samples are reprocessed even though they were originally in BAM format because
+the earlier preprocessing performed by Ranson lab was different from suggested
+processing parameters from AmpliconArchitect (specific BWA params)
+"""
+
+
+import os
+import pandas as pd
+from pathlib import Path
+
+# Define samples
+samplefp = '../data/Sample_Metadata.csv'
+sample_df = pd.read_csv(samplefp)
+
+
+samples = sample_df['SampleID'] 
+print(samples)
+
+# Define directories
+workingDir = os.path.join(os.environ.get('SCRATCH'), 'ranson-wgs')
+# Directory with necessary singularity containers
+containerDir = os.path.join(os.environ.get('CONTAINERS'))
+
+# Specify singularity containers
+samtools_env = os.path.join(containerDir, 'gatk-bwa-samtools_latest.sif')
+#aa_env = os.path.join(containerDir, 'ampliconsuite-pipeline.sif')
+
+# Set AA parameters
+aa_threads = 32
+ref_genome = 'GRCh38'
+
+# Set SLURM log path
+slurm_logdir = '/home/users/tbencomo/cscc-ecdna/workflow/slurm-logs'
+logpath = Path(slurm_logdir)
+logpath.mkdir(parents=True, exist_ok=True) 
+
+rule targets:
+    input:
+        expand(os.path.join(workingDir, "fastq", "{sample}_R1.fastq.gz"), sample=samples),
+        expand(os.path.join(workingDir, "fastq", "{sample}_R2.fastq.gz"), sample=samples),
+        expand(os.path.join(workingDir, "processing", "{sample}", "{sample}.cs.rmdup.bam"), sample=samples),
+        expand(os.path.join(workingDir, "processing", "{sample}",  "{sample}_AA_CNV_SEEDS.bed"), sample=samples),
+        expand(os.path.join(workingDir, "results", "{sample}","{sample}_classification", "{sample}_amplicon_classification_profiles.tsv"), sample=samples)
+
+
+rule bam2fastq:
+    input:
+        bam=os.path.join(workingDir, 'bams', '{sample}.final.bam')
+    output:
+        fq1=os.path.join(workingDir, 'fastq', '{sample}_R1.fastq.gz'),
+        fq2=os.path.join(workingDir, 'fastq', '{sample}_R2.fastq.gz')
+    singularity: samtools_env
+    shell:
+        """
+        gatk SamToFastq \
+            -I  {input.bam} \
+            -F {output.fq1} \
+            -F2 {output.fq2}
+        """
+
+rule prepaa:
+    input:
+        fq1=os.path.join(workingDir, 'fastq', '{sample}_R1.fastq.gz'),
+        fq2=os.path.join(workingDir, 'fastq', '{sample}_R2.fastq.gz')
+    output:
+        os.path.join(workingDir, "processing", "{sample}", "{sample}.cs.rmdup.bam"),
+        os.path.join(workingDir, "processing", "{sample}",  "{sample}_AA_CNV_SEEDS.bed")
+    params: 
+        env_dir=containerDir,
+        out_dir=os.path.join(workingDir, "processing", "{sample}"),
+        refgenome=ref_genome,
+        nthreads=aa_threads
+    shell:
+        """
+        $SOFTWARE/AmpliconSuite-pipeline/singularity/run_paa_singularity.py \
+            --sif {params.env_dir} \
+            --fastqs {input.fq1} {input.fq2} \
+            --ref {params.refgenome} \
+            -o {params.out_dir} \
+            -s {wildcards.sample} \
+            -t {params.nthreads}
+        """
+
+rule runaa:
+    input:
+        bam=os.path.join(workingDir, "processing", "{sample}", "{sample}.cs.rmdup.bam"),
+        cnvkit=os.path.join(workingDir, "processing", "{sample}",  "{sample}_AA_CNV_SEEDS.bed")
+    output:
+        os.path.join(workingDir, "results", "{sample}","{sample}_classification", "{sample}_amplicon_classification_profiles.tsv")
+    params:
+        env_dir=containerDir,
+        out_dir=os.path.join(workingDir, "results", "{sample}")
+    threads: 1
+    shell:
+        """
+        $SOFTWARE/AmpliconSuite-pipeline/singularity/run_paa_singularity.py \
+            --bam {input.bam} \
+            --sif {params.env_dir} \
+            --cnv_bed {input.cnvkit} \
+            -o {params.out_dir} \
+            -s {wildcards.sample} \
+            -t {threads} \
+            --run_AA --run_AC
+        """

@@ -1,0 +1,33 @@
+{
+    "__default__" :
+    {
+        "account" : "tbencomo",
+        "qos" : "normal",
+        "time" : "01:00:00",
+        "ncpus" : 1,
+        "mem" : "8G",
+        "partition" : "normal",
+        "out" : "{logpath}/{rule}-{jobid}.out"
+    },
+    "bam2fastq" :
+    {
+        "time" : "02-00:00:00",
+        "mem" : "40G",
+        "ncpus" : 1,
+        "out" : "{logpath}/{rule}-{wildcards.sample}.out"
+    },
+    "prepaa" :
+    {
+        "time" : "02-00:00:00",
+        "mem" : "48G",
+        "ncpus" : 16,
+        "out" : "{logpath}/{rule}-{wildcards.sample}.out"
+    },
+    "runaa" :
+    {
+        "time" : "2-00:00:00",
+        "mem" : "32G",
+        "ncpus" : 1,
+        "out" : "{logpath}/{rule}-{wildcards.sample}.out"
+    }
+}
