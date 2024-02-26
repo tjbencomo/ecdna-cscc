@@ -1,4 +1,4 @@
-# ecDNA in cSCC - Currently Under Construction
+# ecDNA in cSCC
 This repo contains code for "Extrachromosomal DNA in cutaneous squamous cell carcinoma is associated with increased nodal disease" by 
 [Bencomo et al 2024](https://www.biorxiv.org/content/10.1101/2024.02.04.578845v1.abstract). 
 
